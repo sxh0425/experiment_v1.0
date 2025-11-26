@@ -167,13 +167,15 @@ def main():
     
     # 提取特征
     # 使用每个通道独立的特征：19通道 × 5频带 = 95个特征
-    print("\n[2/4] 提取特征 (RBP - 95维: 19通道×5频带)...")
-    cache_name = f"features_{'_'.join(sorted(groups_needed))}_95dim"  # 95维特征
+    # 按通道排列: [ch1的5频带, ch2的5频带, ...]
+    print("\n[2/4] 提取特征 (RBP - 95维: 按通道排列)...")
+    cache_name = f"features_{'_'.join(sorted(groups_needed))}_95dim_bychannel"
     features_dict, labels_dict = extract_features_all_subjects(
         subjects_data,
         use_cache=args.use_cache,
         cache_name=cache_name,
-        aggregate_channels=False  # 不对通道平均，保留19通道×5频带=95个特征
+        aggregate_channels=False,  # 不对通道平均
+        feature_order='by_channel'  # 按通道排列特征
     )
     
     total_epochs = sum(len(f) for f in features_dict.values())

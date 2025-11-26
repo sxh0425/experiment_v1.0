@@ -17,10 +17,10 @@ class KNNClassifier(BaseClassifier):
     
     def __init__(
         self,
-        n_neighbors: int = 3,
-        weights: str = 'uniform',
+        n_neighbors: int = 5,  # 尝试k=5
+        weights: str = 'distance',  # 尝试距离加权
         metric: str = 'minkowski',
-        scaler_type: str = 'none'  # 'standard', 'minmax', 'none'
+        scaler_type: str = 'none'  # 无标准化
     ):
         """
         初始化

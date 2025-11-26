@@ -153,7 +153,8 @@ def extract_features_single_subject(
     sfreq: float,
     window_size: float = WINDOW_SIZE,
     overlap_ratio: float = OVERLAP_RATIO,
-    aggregate_channels: bool = True
+    aggregate_channels: bool = True,
+    feature_order: str = 'by_channel'  # 'by_channel' 或 'by_band'
 ) -> np.ndarray:
     """
     提取单个被试的特征
@@ -164,6 +165,9 @@ def extract_features_single_subject(
         window_size: 窗口大小(秒)
         overlap_ratio: 重叠比例
         aggregate_channels: 是否对通道取平均
+        feature_order: 特征排列方式
+            - 'by_channel': [ch1的5频带, ch2的5频带, ...] 共95个
+            - 'by_band': [所有通道的delta, 所有通道的theta, ...] 共95个
         
     Returns:
         np.ndarray: 特征矩阵 (n_epochs, n_features)
@@ -180,6 +184,7 @@ def extract_features_single_subject(
     # 提取每个epoch的特征
     all_features = []
     band_names = list(FREQ_BANDS.keys())
+    n_channels = data.shape[0]
     
     for epoch in epochs:
         # 计算相对频带功率
@@ -189,8 +194,16 @@ def extract_features_single_subject(
             # 对所有通道取平均，得到5个特征
             features = np.array([rbp[band].mean() for band in band_names])
         else:
-            # 保留所有通道，得到 5*n_channels 个特征
-            features = np.concatenate([rbp[band] for band in band_names])
+            if feature_order == 'by_channel':
+                # 按通道排列: [ch1的5频带, ch2的5频带, ...]
+                features = []
+                for ch in range(n_channels):
+                    for band in band_names:
+                        features.append(rbp[band][ch])
+                features = np.array(features)
+            else:  # 'by_band'
+                # 按频带排列: [所有通道的delta, 所有通道的theta, ...]
+                features = np.concatenate([rbp[band] for band in band_names])
         
         all_features.append(features)
     
@@ -202,6 +215,7 @@ def extract_features_all_subjects(
     window_size: float = WINDOW_SIZE,
     overlap_ratio: float = OVERLAP_RATIO,
     aggregate_channels: bool = True,
+    feature_order: str = 'by_channel',
     use_cache: bool = True,
     cache_name: str = "features"
 ) -> Tuple[Dict[str, np.ndarray], Dict[str, int]]:
@@ -213,6 +227,7 @@ def extract_features_all_subjects(
         window_size: 窗口大小(秒)
         overlap_ratio: 重叠比例
         aggregate_channels: 是否对通道取平均
+        feature_order: 特征排列方式 ('by_channel' 或 'by_band')
         use_cache: 是否使用缓存
         cache_name: 缓存文件名
         
@@ -242,7 +257,7 @@ def extract_features_all_subjects(
         
         # 提取特征
         features = extract_features_single_subject(
-            data, sfreq, window_size, overlap_ratio, aggregate_channels
+            data, sfreq, window_size, overlap_ratio, aggregate_channels, feature_order
         )
         
         if len(features) > 0:
