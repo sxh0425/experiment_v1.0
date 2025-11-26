@@ -1,0 +1,66 @@
+{
+  "timestamp": "20251126_135814",
+  "models": [
+    "knn"
+  ],
+  "tasks": [
+    "AD_CN",
+    "FTD_CN"
+  ],
+  "results": {
+    "AD_CN": {
+      "knn": {
+        "metrics": {
+          "accuracy": 0.6224459021337556,
+          "sensitivity": 0.6692848284415047,
+          "specificity": 0.5658508158508159,
+          "f1_score": 0.6598512379852596,
+          "precision": 0.6506798847879965,
+          "true_positive": 9714,
+          "true_negative": 6797,
+          "false_positive": 5215,
+          "false_negative": 4800,
+          "n_subjects": 65,
+          "n_total_samples": 26526
+        },
+        "confusion_matrix": [
+          [
+            6797,
+            5215
+          ],
+          [
+            4800,
+            9714
+          ]
+        ]
+      }
+    },
+    "FTD_CN": {
+      "knn": {
+        "metrics": {
+          "accuracy": 0.6198579461379107,
+          "sensitivity": 0.5077463083999032,
+          "specificity": 0.696969696969697,
+          "f1_score": 0.5212151332546437,
+          "precision": 0.5354179961710275,
+          "true_positive": 4195,
+          "true_negative": 8372,
+          "false_positive": 3640,
+          "false_negative": 4067,
+          "n_subjects": 52,
+          "n_total_samples": 20274
+        },
+        "confusion_matrix": [
+          [
+            8372,
+            3640
+          ],
+          [
+            4067,
+            4195
+          ]
+        ]
+      }
+    }
+  }
+}

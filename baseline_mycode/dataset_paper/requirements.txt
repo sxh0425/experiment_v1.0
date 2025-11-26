@@ -1,0 +1,27 @@
+# EEG分类论文复现 - 依赖包
+# Paper: A Dataset of Scalp EEG Recordings of Alzheimer's Disease, 
+#        Frontotemporal Dementia and Healthy Subjects from Routine EEG
+
+# 基础科学计算
+numpy>=1.21.0
+pandas>=1.3.0
+scipy>=1.7.0
+
+# EEG处理
+mne>=1.0.0
+
+# 机器学习
+scikit-learn>=1.0.0
+lightgbm>=3.3.0
+hyperopt>=0.2.7
+
+# 可视化
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# 进度条
+tqdm>=4.62.0
+
+# 日志
+colorlog>=6.0.0
+
