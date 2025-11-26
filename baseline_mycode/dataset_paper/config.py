@@ -51,7 +51,8 @@ WINDOW_SIZE = 4.0
 OVERLAP_RATIO = 0.5
 
 # Welch方法参数
-WELCH_NPERSEG = 256  # 每段长度
+# 4秒窗口×500Hz=2000样本
+WELCH_NPERSEG = 256  # 回退原值
 
 # ============== 被试组别 ==============
 GROUP_LABELS = {

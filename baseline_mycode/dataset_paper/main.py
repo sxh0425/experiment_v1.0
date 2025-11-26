@@ -166,16 +166,19 @@ def main():
     print(f"      已加载 {len(subjects_data)} 个被试的数据")
     
     # 提取特征
-    print("\n[2/4] 提取特征 (RBP)...")
-    cache_name = f"features_{'_'.join(sorted(groups_needed))}"
+    # 使用每个通道独立的特征：19通道 × 5频带 = 95个特征
+    print("\n[2/4] 提取特征 (RBP - 95维: 19通道×5频带)...")
+    cache_name = f"features_{'_'.join(sorted(groups_needed))}_95dim"  # 95维特征
     features_dict, labels_dict = extract_features_all_subjects(
         subjects_data,
         use_cache=args.use_cache,
-        cache_name=cache_name
+        cache_name=cache_name,
+        aggregate_channels=False  # 不对通道平均，保留19通道×5频带=95个特征
     )
     
     total_epochs = sum(len(f) for f in features_dict.values())
-    print(f"      共 {total_epochs} 个epochs，每个 5 个特征")
+    n_features = list(features_dict.values())[0].shape[1] if features_dict else 0
+    print(f"      共 {total_epochs} 个epochs，每个 {n_features} 个特征")
     
     # 存储所有结果
     all_results = {
